@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itdr.mapper.PayInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.itdr.pojo.PayInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="order_no" property="orderNo" jdbcType="BIGINT" />
+    <result column="pay_platform" property="payPlatform" jdbcType="VARCHAR" />
+    <result column="plantform_number" property="plantformNumber" jdbcType="VARCHAR" />
+    <result column="plantform_status" property="plantformStatus" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, uid, order_no, pay_platform, plantform_number, plantform_status, create_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from lvyou_payinfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from lvyou_payinfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.itdr.pojo.PayInfo" >
+    insert into lvyou_payinfo (id, uid, order_no, 
+      pay_platform, plantform_number, plantform_status, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{orderNo,jdbcType=BIGINT}, 
+      #{payPlatform,jdbcType=VARCHAR}, #{plantformNumber,jdbcType=VARCHAR}, #{plantformStatus,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.itdr.pojo.PayInfo" >
+    insert into lvyou_payinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="payPlatform != null" >
+        pay_platform,
+      </if>
+      <if test="plantformNumber != null" >
+        plantform_number,
+      </if>
+      <if test="plantformStatus != null" >
+        plantform_status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=BIGINT},
+      </if>
+      <if test="payPlatform != null" >
+        #{payPlatform,jdbcType=VARCHAR},
+      </if>
+      <if test="plantformNumber != null" >
+        #{plantformNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="plantformStatus != null" >
+        #{plantformStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.itdr.pojo.PayInfo" >
+    update lvyou_payinfo
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=BIGINT},
+      </if>
+      <if test="payPlatform != null" >
+        pay_platform = #{payPlatform,jdbcType=VARCHAR},
+      </if>
+      <if test="plantformNumber != null" >
+        plantform_number = #{plantformNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="plantformStatus != null" >
+        plantform_status = #{plantformStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.itdr.pojo.PayInfo" >
+    update lvyou_payinfo
+    set uid = #{uid,jdbcType=INTEGER},
+      order_no = #{orderNo,jdbcType=BIGINT},
+      pay_platform = #{payPlatform,jdbcType=VARCHAR},
+      plantform_number = #{plantformNumber,jdbcType=VARCHAR},
+      plantform_status = #{plantformStatus,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
