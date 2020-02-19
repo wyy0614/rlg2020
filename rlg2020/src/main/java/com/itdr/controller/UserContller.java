@@ -1,8 +1,11 @@
 package com.itdr.controller;
 
 import com.itdr.common.ServerResponse;
+import com.itdr.config.ConstCode;
 import com.itdr.pojo.User;
+import com.itdr.pojo.bo.UserVo;
 import com.itdr.service.UserService;
+import com.itdr.utils.ObjectToVOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,32 +52,47 @@ public class UserContller {
     }
 
     /**
-     * 检查用户名是否有效
-     * @param username
+     * 检查用户名邮箱是否有效
+     * @param str
+     * @param type
      * @return
      */
     @RequestMapping("checkvalid.do")
-    public ServerResponse<User> check(String username){
-        return userService.check(username);
+    public ServerResponse<User> check(String str,String type){
+        return userService.check(str,type);
     }
 
     /**
      * 获取登陆用户信息
+     * @param session
      * @return
      */
     @RequestMapping("getuserinfo.do")
-    public ServerResponse<User> getInfor(String username){
-        return userService.getInfor(username);
+    public ServerResponse<User> getInfor(HttpSession session){
+        User user =(User) session.getAttribute("user");
+        //判断用户是否登陆
+        if(user == null){
+            return ServerResponse.defeatedRS(ConstCode.DEFAULT_FAIL,ConstCode.UserEnum.FORCE_EXIT.getDesc());
+        }
+        UserVo userVo = ObjectToVOUtil.userToUserVO(user);
+        return ServerResponse.successRS(userVo);
     }
+
 
     /**
      * 获取登陆用户的详细信息
+     * @param session
      * @return
      */
-    @RequestMapping("getinforamtion.do")
-    public ServerResponse<User> getAllInfor(String username){
 
-        return userService.getAllInfor(username);
+    @RequestMapping("getinforamtion.do")
+    public ServerResponse<User> getAllInfor(HttpSession session){
+        //判断用户是否登陆
+        User user =(User) session.getAttribute("user");
+        if(user == null){
+            return ServerResponse.defeatedRS(ConstCode.DEFAULT_FAIL,ConstCode.UserEnum.FORCE_EXIT.getDesc());
+        }
+        return ServerResponse.successRS(user);
     }
 
 
@@ -84,20 +102,37 @@ public class UserContller {
      * @param iphone
      * @param question
      * @param answer
+     * @param session
      * @return
      */
     @RequestMapping("updateinformation.do")
-    public ServerResponse<User> updateInfor(String email, String iphone, String question, String answer,String username){
-        return userService.updateInfor(email,iphone,question,answer,username);
+    public ServerResponse<User> updateInfor(String email, String iphone, String question, String answer,HttpSession session){
+        //判断用户是否登陆
+        User user =(User) session.getAttribute("user");
+        if(user == null){
+            return ServerResponse.defeatedRS(ConstCode.DEFAULT_FAIL,ConstCode.UserEnum.FORCE_EXIT.getDesc());
+        }
+
+        return userService.updateInfor(email,iphone,question,answer,user);
     }
+
 
     /**
      * 退出登陆
+     * @param session
      * @return
      */
     @RequestMapping("logout.do")
-    public ServerResponse<User> logout(String username){
-        return userService.logout(username);
+    public ServerResponse<User> logout(HttpSession session){
+        //判断用户是否登陆
+        User user =(User) session.getAttribute("user");
+        if(user == null){
+            return ServerResponse.defeatedRS(ConstCode.DEFAULT_FAIL,
+                    ConstCode.UserEnum.UNLAWFULNESS_TOKEN.getDesc());
+        }
+
+        session.removeAttribute("user");
+        return ServerResponse.successRS(ConstCode.UserEnum.LOGOUT.getDesc());
     }
 
 }

@@ -9,14 +9,8 @@ public interface UserService {
     ServerResponse login(String username, String password);
     //用户注册
     ServerResponse<User> register(User u);
-    //查看登陆用户信息
-    ServerResponse<User> getInfor(String username);
 
-    ServerResponse<User> getAllInfor(String username);
+    ServerResponse<User> updateInfor(String email, String iphone, String question, String answer,User user);
 
-    ServerResponse<User> updateInfor(String email, String iphone, String question, String answer, String username);
-
-    ServerResponse<User> logout(String username);
-
-    ServerResponse<User> check(String username);
+    ServerResponse<User> check(String str,String type);
 }

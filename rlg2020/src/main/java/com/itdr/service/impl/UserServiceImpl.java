@@ -103,48 +103,6 @@ public class UserServiceImpl implements UserService {
 
 
     /**
-     * 查看登陆用户信息
-     *
-     * @return
-     */
-    @Override
-    public ServerResponse<User> getInfor(String username) {
-        if (StringUtils.isEmpty(username)) {
-            return ServerResponse.defeatedRS
-                    (ConstCode.UserEnum.EMPTY_USERNAME.getCode(),
-                            ConstCode.UserEnum.EMPTY_USERNAME.getDesc());
-        }
-        User u = userMapper.selectBystate(username);
-        if (u == null) {
-            return ServerResponse.defeatedRS
-                    (ConstCode.UserEnum.FORCE_EXIT.getCode(),
-                            ConstCode.UserEnum.FORCE_EXIT.getDesc());
-        }
-        return ServerResponse.successRS(u);
-    }
-
-    /**
-     * 查看登陆用户详细信息
-     *
-     * @return
-     */
-    @Override
-    public ServerResponse<User> getAllInfor(String username) {
-        if (StringUtils.isEmpty(username)) {
-            return ServerResponse.defeatedRS
-                    (ConstCode.UserEnum.EMPTY_USERNAME.getCode(),
-                            ConstCode.UserEnum.EMPTY_USERNAME.getDesc());
-        }
-        User u = userMapper.selectAllBystate(username);
-        if (u == null) {
-            return ServerResponse.defeatedRS
-                    (ConstCode.UserEnum.FORCE_EXIT.getCode(),
-                            ConstCode.UserEnum.FORCE_EXIT.getDesc());
-        }
-        return ServerResponse.successRS(u);
-    }
-
-    /**
      * 登陆状态更新个人信息
      *
      * @param email
@@ -154,90 +112,55 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public ServerResponse<User> updateInfor(String email, String iphone, String question, String answer,String username) {
-        //非空判断
-        if (StringUtils.isEmpty(username)) {
-            return ServerResponse.defeatedRS
-                    (ConstCode.UserEnum.EMPTY_USERNAME.getCode(),
-                            ConstCode.UserEnum.EMPTY_USERNAME.getDesc());
-        }
-        if (StringUtils.isEmpty(email)) {
-            return ServerResponse.defeatedRS(
-                    ConstCode.UserEnum.EMPTY_EMAIL.getCode(),
-                    ConstCode.UserEnum.EMPTY_EMAIL.getDesc()
-            );
-        }
-        if (StringUtils.isEmpty(iphone)) {
-            return ServerResponse.defeatedRS(
-                    ConstCode.UserEnum.EMPTY_IPHONE.getCode(),
-                    ConstCode.UserEnum.EMPTY_IPHONE.getDesc()
-            );
-        }
-        if (StringUtils.isEmpty(answer)) {
-            return ServerResponse.defeatedRS
-                    (ConstCode.UserEnum.EMPTY_ANSWER.getCode(),
-                            ConstCode.UserEnum.EMPTY_ANSWER.getDesc());
-        }
-        if (StringUtils.isEmpty(question)) {
-            return ServerResponse.defeatedRS
-                    (ConstCode.UserEnum.EMPTY_QUESTION.getCode(),
-                            ConstCode.UserEnum.EMPTY_QUESTION.getDesc());
-        }
+    public ServerResponse<User> updateInfor(String email, String iphone, String question, String answer,User user) {
 
-        int update = userMapper.updateInfor(username,email,iphone,question,answer);
-        if(update <= 0){
+        User u = new User();
+        u.setId(user.getId());
+        u.setEmail(email);
+        u.setIphone(iphone);
+        u.setQuestion(question);
+        u.setAnswer(answer);
+        int i = userMapper.updateByPrimaryKeySelective(u);
+        if(i<=0){
             return ServerResponse.defeatedRS(
                     ConstCode.DEFAULT_FAIL,
                     ConstCode.UserEnum.NO_LOGIN.getDesc()
             );
         }
         return ServerResponse.successRS(
-                ConstCode.DEFAULT_SUCCESS,
                 ConstCode.UserEnum.SUCCESS_USERMSG.getDesc()
         );
     }
 
     /**
-     * 退出登陆
+     * 检查用户名邮箱是否有效
+     * @param str
+     * @param type
      * @return
      */
-    @Override
-    public ServerResponse<User> logout(String username) {
-        //非空判断
-        if (StringUtils.isEmpty(username)) {
-            return ServerResponse.defeatedRS
-                    (ConstCode.UserEnum.EMPTY_USERNAME.getCode(),
-                            ConstCode.UserEnum.EMPTY_USERNAME.getDesc());
-        }
-        int update = userMapper.updateState(username);
-        if(update <= 0){
-            return ServerResponse.defeatedRS(
-                    ConstCode.DEFAULT_FAIL,
-                    ConstCode.UserEnum.UNLAWFULNESS_TOKEN.getDesc()
-            );
-        }
-        return ServerResponse.successRS(
-                ConstCode.UserEnum.LOGOUT.getDesc()
-        );
-    }
 
     @Override
-    public ServerResponse<User> check(String username) {
+    public ServerResponse<User> check(String str,String type) {
         //非空判断
-        if (StringUtils.isEmpty(username)) {
+        if (StringUtils.isEmpty(str)) {
             return ServerResponse.defeatedRS
-                    (ConstCode.UserEnum.EMPTY_USERNAME.getCode(),
-                            ConstCode.UserEnum.EMPTY_USERNAME.getDesc());
+                    (ConstCode.DEFAULT_FAIL,
+                            ConstCode.UserEnum.EMPTY_EMAIL.getDesc());
         }
-        int i = userMapper.selectByUsername(username);
+        if (StringUtils.isEmpty(type)) {
+            return ServerResponse.defeatedRS
+                    (ConstCode.DEFAULT_FAIL,
+                            ConstCode.UserEnum.EMPTY_TYPE.getDesc());
+        }
+        //查找用户名或邮箱是否存在
+        int i = userMapper.selectByUsernameOrEmail(str,type);
         if(i > 0){
             return ServerResponse.defeatedRS(
-                    ConstCode.UserEnum.EXIST_USER.getCode(),
-                    ConstCode.UserEnum.EXIST_USER.getDesc()
+                    ConstCode.UserEnum.EXIST_EMAILORUSER.getCode(),
+                    ConstCode.UserEnum.EXIST_EMAILORUSER.getDesc()
             );
         }
         return ServerResponse.successRS(
-             ConstCode.UserEnum.SUCCESS_MSG.getDesc(),
              ConstCode.UserEnum.SUCCESS_MSG.getDesc()
         );
     }

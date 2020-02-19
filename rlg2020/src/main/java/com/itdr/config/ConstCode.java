@@ -13,11 +13,9 @@ public class ConstCode {
         EMPTY_PASSWORD(3, "密码不能为空"),
         EMPTY_QUESTION(4, "问题不能为空"),
         EMPTY_ANSWER(5, "答案不能为空"),
-        EMPTY_EMAIL(26, "邮箱不能为空"),
-        EMPTY_IPHONE(27, "手机号不能为空"),
         INEXISTENCE_USER(6, "用户名不存在"),
         EXIST_USER(7, "用户名已存在"),
-        EXIST_EMAIL(8, "邮箱已注册"),
+        EXIST_EMAILORUSER(8, "用户名已存在，邮箱已注册"),
         EMPTY_PARAM(9, "注册信息不能为空"),
         EMPTY_PARAM2(10, "更新信息不能为空"),
         SUCCESS_USER(11, "用户注册成功"),
@@ -34,7 +32,10 @@ public class ConstCode {
         FORCE_EXIT(22, "用户未登录，无法获取当前用户信息"),
         LOGOUT(23, "退出成功"),
         FAIL_LOGIN(24,"登陆失败"),
-        FAIL_REGISTER(25,"注册失败");
+        FAIL_REGISTER(25,"注册失败"),
+        EMPTY_EMAIL(26, "用户名或邮箱不能为空"),
+        EMPTY_IPHONE(27, "手机号不能为空"),
+        EMPTY_TYPE(28, "类型不能为空");
 
         private int code;
         private String desc;

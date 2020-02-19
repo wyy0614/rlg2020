@@ -1,6 +1,7 @@
 package com.itdr.mapper;
 
 import com.itdr.pojo.User;
+import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {
     int deleteByPrimaryKey(Integer id);
@@ -19,12 +20,6 @@ public interface UserMapper {
 
     int selectByUsername(String username);
 
-    User selectBystate(String username);
 
-    User selectAllBystate(String username);
-
-    int updateInfor(String username,String email, String iphone, String question, String answer);
-
-    int updateState(String username);
-
+    int selectByUsernameOrEmail(@Param("str") String str,@Param("type") String type);
 }
