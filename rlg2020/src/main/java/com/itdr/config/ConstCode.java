@@ -62,6 +62,38 @@ public class ConstCode {
         }
     }
 
+    public enum ProductEnum{
+        UNLAWFULNESS_PARAM(1,"非法参数"),
+        INEXISTENCE_PRODUCT(2,"商品不存在"),
+        EMPTY_PARAM(3,"参数不能为空");
+
+
+
+        private int code;
+        private String desc;
+
+        private ProductEnum(int code, String desc) {
+            this.code = code;
+            this.desc = desc;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public void setCode(int code) {
+            this.code = code;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+    }
+
 }
 
 

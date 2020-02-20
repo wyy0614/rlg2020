@@ -18,8 +18,15 @@ public interface UserMapper {
 
     User selectByUsernameAndPassword(String username, String password);
 
-    int selectByUsername(String username);
+
+    User selectByUsername(String username);
 
 
     int selectByUsernameOrEmail(@Param("str") String str,@Param("type") String type);
+
+    int selectByUsernameAndQuestionAndAnswer(@Param("username") String username, @Param("question")String question, @Param("answer")String answer);
+
+    int updateByUsernameAndPasswordNew(@Param("username")String username, @Param("passwordNew")String passwordNew);
+
+    int updateByUsernameAndPasswordNewAndPassworedOld(@Param("username")String username,@Param("passwordOld")String passwordOld, @Param("passwordNew")String passwordNew);
 }
